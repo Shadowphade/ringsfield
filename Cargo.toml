@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-raylib = "5.5.0"
+bevy = "0.15.3"
 structopt = "0.3.26"
