@@ -128,7 +128,7 @@ pub fn grab_cursor(keys: Res<ButtonInput<KeyCode>>,
         if keys.just_pressed(key_bindings.grab_mouse_toggle) {
             toggle_cursor_grab(&mut window);
         } else {
-            warn!("Primary Window not found with grab_cursor");
+            //warn!("Primary Window not found with grab_cursor");
         }
     }
 }

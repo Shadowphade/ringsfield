@@ -5,7 +5,7 @@ use bevy::{
     pbr::CascadeShadowConfigBuilder, prelude::*, scene::SceneInstanceReady
 };
 
-const MODEL_PATH: &str = "robot.glb";
+const MODEL_PATH: &str = "testhand.glb";
 
 fn main() {
     App::new()
