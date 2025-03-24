@@ -1,4 +1,5 @@
 use std::f32::consts::PI;
+use ringsfield::player::PlayerPlugin;
 
 use bevy::{
     pbr::CascadeShadowConfigBuilder, prelude::*, scene::SceneInstanceReady
@@ -15,7 +16,8 @@ fn main() {
         })
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup_mesh)
-        .add_systems(Startup, setup_camera_and_env)
+        .add_plugins(PlayerPlugin)
+        .add_systems(Startup, setup_env)
         .run();
 }
 
@@ -31,7 +33,7 @@ fn setup_mesh(
     mut graphs: ResMut<Assets<AnimationGraph>>,
 ) {
     let (graph, index) = AnimationGraph::from_clip(
-        asset_server.load(GltfAssetLabel::Animation(1).from_asset(MODEL_PATH)),
+        asset_server.load(GltfAssetLabel::Animation(0).from_asset(MODEL_PATH)),
     );
 
     let graph_handle = graphs.add(graph);
@@ -66,16 +68,11 @@ fn play_animation_when_ready(
     }
 }
 
-fn setup_camera_and_env (
+fn setup_env (
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>
 ) {
-    commands.spawn((
-       Camera3d::default(),
-       Transform::from_xyz(25.0, 25.0, 25.0).looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::Y),
-    ));
-
     commands.spawn((
         Mesh3d(meshes.add(Plane3d::default().mesh().size(500000.0, 500000.0))),
         MeshMaterial3d(materials.add(Color::srgb(0.0, 0.0, 0.0))),
