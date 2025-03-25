@@ -1,5 +1,14 @@
 use std::f32::consts::PI;
 use ringsfield::player::PlayerPlugin;
+use ringsfield::game_menu::splash;
+use ringsfield::game_menu::game;
+use ringsfield::game_menu::menu;
+use ringsfield::game_menu::DisplayQuality;
+use ringsfield::game_menu::GameState;
+
+
+#[derive(Resource, Debug, Component, PartialEq, Eq, Clone, Copy)]
+pub struct Volume(u32);
 
 use bevy::{
     pbr::CascadeShadowConfigBuilder, prelude::*, scene::SceneInstanceReady
@@ -15,9 +24,17 @@ fn main() {
             ..default()
         })
         .add_plugins(DefaultPlugins)
-        .add_systems(Startup, setup_mesh)
+        .insert_resource(DisplayQuality::Medium)
+        .insert_resource(Volume(7))
+        .init_state::<GameState>()
+        .add_plugins((splash::splash_plugin, menu::menu_plugin, game::game_plugin))
         .add_plugins(PlayerPlugin)
+//        .add_plugins(game_menu_plugin) // Conectando game_menu.rs
+        .add_systems(Startup, setup_mesh)
         .add_systems(Startup, setup_env)
+     //   .add_systems(Update, button_interaction_system) // Adicionando sistema de interação
+
+
         .run();
 }
 
