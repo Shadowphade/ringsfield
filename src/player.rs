@@ -3,10 +3,10 @@ use crate::player_controller::*;
 
 
 //Uncomment when the Player component is needed
-// #[derive(Component)]
-// pub struct Player {
-//     health: f64,
-// }
+//#[derive(Component)]
+//pub struct Player {
+//    pub health: f32,
+//}
 
 pub fn setup_player(mut commands: Commands) {
     commands.spawn((
@@ -15,6 +15,7 @@ pub fn setup_player(mut commands: Commands) {
         Transform::from_xyz(-2.0, 5.0, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
     ));
 }
+
 
 pub struct PlayerPlugin;
 

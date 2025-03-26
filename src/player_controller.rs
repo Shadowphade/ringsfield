@@ -52,6 +52,7 @@ pub fn player_move(
     key_bindings: Res<KeyBinds>,
     mut query: Query<(&Controller, &mut Transform)>,
 ) {
+    info!("Running player_move system"); // Add this to check if system runs
     if let Ok(window) = primary_window.get_single() {
         for (_player, mut transform) in query.iter_mut() {
             let mut velocity = Vec3::ZERO;
@@ -63,6 +64,7 @@ pub fn player_move(
                 match window.cursor_options.grab_mode {
                     CursorGrabMode::None => (),
                     _ => {
+                        info!("Key pressed: {:?}", key); // Debugging keypresses
                         let key = *key;
                         if key == key_bindings.forward {
                             velocity += forward;
@@ -71,25 +73,25 @@ pub fn player_move(
                         } else if key == key_bindings.left {
                             velocity -= right;
                         } else if key == key_bindings.right {
-                            velocity += right
+                            velocity += right;
                         } else if key == key_bindings.jump {
-                            velocity += Vec3::Y; // These are temporary
-                        }  else if key == key_bindings.crouch {
-                            velocity -= Vec3::Y; // These are temporary
+                            velocity += Vec3::Y;
+                        } else if key == key_bindings.crouch {
+                            velocity -= Vec3::Y;
                         }
                     }
                 }
             }
 
             velocity = velocity.normalize_or_zero();
-
-            transform.translation += velocity * time.delta_secs() * settings.speed
+            transform.translation += velocity * time.delta_secs() * settings.speed;
+            info!("Player Position: {:?}", transform.translation); // Debugging movement
         }
-
     } else {
         warn!("Primary Window not found with player_move");
     }
 }
+
 
 pub fn player_look(
     mouse_settings: Res<MouseSettings>,
@@ -121,8 +123,8 @@ pub fn player_look(
 }
 
 pub fn grab_cursor(keys: Res<ButtonInput<KeyCode>>,
-                   key_bindings: Res<KeyBinds>,
-                   mut primary_window: Query<&mut Window, With<PrimaryWindow>>
+                key_bindings: Res<KeyBinds>,
+                mut primary_window: Query<&mut Window, With<PrimaryWindow>>
 ) {
     if let Ok(mut window) = primary_window.get_single_mut() {
         if keys.just_pressed(key_bindings.grab_mouse_toggle) {
@@ -153,3 +155,4 @@ pub fn init_cursor_grab(mut primary_window: Query<&mut Window, With<PrimaryWindo
          warn!("Primary Window not found with init_cursor_grab")
     }
 }
+
